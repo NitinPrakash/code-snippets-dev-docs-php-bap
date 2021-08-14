@@ -59,7 +59,10 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'search';						
 
 		if( !empty( $request_data->start_loc ) && !empty( $request_data->start_loc )  ){
@@ -97,7 +100,9 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'select';						
 
 		if( !empty( $request_data->items ) && is_array( $request_data->items )  ){
@@ -135,7 +140,9 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'init';						
 
 		if( !empty( $request_data )  ){			
@@ -172,7 +179,9 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'confirm';						
 
 		if( !empty( $request_data->transactionId )  ){			
@@ -198,7 +207,10 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'status';						
 
 		if( !empty( $request_data->order_id )  ){			
@@ -223,7 +235,9 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
 		$context['action'] = 'status';						
 
 		if( !empty( $request_data->order_id ) ){			
@@ -246,14 +260,17 @@
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
-		$context = $this->build_context();
-		$context['action'] = 'upate';						
+
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
+		$context['action'] = 'update';						
 
 		if( !empty( $request_data )  ){			
 
 			$message = [
 					  'order' => [
-					  	'id': $request_data->orderId,
+					  	'id'=> $request_data->orderId,
 					    'billing' => $request_data->userBillingDetails,
 					    'fulfillment' => [
 					      'start' => [
@@ -278,10 +295,90 @@
 
 	}
 
-	function rate(){
+	function rate( $request ){
+
+		$request_uri = $this->registry_lookup().'/rate';
+		$auth_headers = $this->build_auth_headers();
+
+		$request_data = json_decode( $request );
+
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
+		$context['action'] = 'rate';						
+
+		if( !empty( $request_data->orderId ) && !empty( $request_data->rating )   ){			
+
+			$message = [					  
+					  	'id'=> $request_data->orderId,
+					    'value' => $request_data->rating,
+					   ];											
+
+			$build_request = json_encode ( $this->build_request( $context, $message ) );
+
+			$response = $this->do_curl( $request_uri, $build_request, $auth_headers );						
+
+		}else{
+			http_response_code(400);
+		}
+
 	}
 
-	function get_support(){
+	function track_order( $request ){
+
+		$request_uri = $this->registry_lookup().'/track';
+		$auth_headers = $this->build_auth_headers();
+
+		$request_data = json_decode( $request );
+
+		$order_id = empty( $request_data->order_id ) ? '' : $request_data->order_id;
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
+		$context['action'] = 'track';
+		$callback_url = "http://localhost/bap/track_order?$order_id";						
+
+		if( !empty( $request_data->orderId ) && !empty( $request_data->rating )   ){			
+
+			$message = [					  
+					  	'order_id'=> $request_data->orderId,
+					  	'callback_url' => 					    
+					   ];											
+
+			$build_request = json_encode ( $this->build_request( $context, $message ) );
+
+			$response = $this->do_curl( $request_uri, $build_request, $auth_headers );						
+
+		}else{
+			http_response_code(400);
+		}
+	}
+
+	function get_support( $request ){
+
+		$request_uri = $this->registry_lookup().'/support';
+		$auth_headers = $this->build_auth_headers();
+
+		$request_data = json_decode( $request );
+
+		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
+		$context = $this->build_context( $transaction_id );
+
+		$context['action'] = 'support';						
+
+		if( !empty( $request_data->orderId ) && !empty( $request_data->rating )   ){			
+
+			$message = [					  
+					  	'ref_id'=> $request_data->orderId,					    
+					   ];											
+
+			$build_request = json_encode ( $this->build_request( $context, $message ) );
+
+			$response = $this->do_curl( $request_uri, $build_request, $auth_headers );						
+
+		}else{
+			http_response_code(400);
+		}
 	}
 
 	/* ----- Start On Search BAP ----- */	

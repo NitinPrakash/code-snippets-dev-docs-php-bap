@@ -193,6 +193,42 @@ $app->post("/cancel_order", function () use ($app) {
 
 });
 
+$app->post("/rate", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  $body = $app->request->getBody();  
+
+  $send_request = $request->rate( $body );
+
+  echo $send_request; 
+
+});
+
+$app->post("/get_support", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  $body = $app->request->getBody();  
+
+  $send_request = $request->get_support( $body );
+
+  echo $send_request; 
+
+});
+
+$app->post("/track_order", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  $body = $app->request->getBody();  
+
+  $send_request = $request->track_order( $body );
+
+  echo $send_request; 
+
+});
+
 // $app->post("/select_offer", function () use ($app) {   
 
 //   $request = new BAP(); 
