@@ -1,0 +1,13 @@
+{
+    "name": "beckn/php_bap",
+    "description": "BAP Code snippets for dev docs in PHP",
+    "authors": [
+        {
+            "name": "Nitin Prakash",
+            "email": "nitin247@outlook.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6"
+    }
+}
