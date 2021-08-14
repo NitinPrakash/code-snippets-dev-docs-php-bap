@@ -119,6 +119,8 @@ $app->post("/on_rating", function () use ($app) {
 
 /* ------------ END POST REQUESTS --------------- */
 
+/* ------------ Client POST Request Handlers or Dispatchers --------------- */
+
 $app->post("/search_by_pickup_and_drop_location", function () use ($app) {   
 
   $request = new BAP(); 
