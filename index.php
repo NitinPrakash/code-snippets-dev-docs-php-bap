@@ -17,8 +17,10 @@ $app->post("/on_search", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request
+  // Send Packet Data
   $response = $request->on_search( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -28,9 +30,14 @@ $app->post("/on_select", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+// Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_select( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -40,9 +47,14 @@ $app->post("/on_init", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_init( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -52,9 +64,14 @@ $app->post("/on_confirm", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_confirm( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -64,9 +81,14 @@ $app->post("/on_status", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_status( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -76,9 +98,14 @@ $app->post("/on_track", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_track( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -88,9 +115,14 @@ $app->post("/on_cancel", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_track( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -100,9 +132,14 @@ $app->post("/on_update", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_update( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -112,9 +149,14 @@ $app->post("/on_rating", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Send Packet Data
   $response = $request->on_rating( $body, $headers );
+  // Save Response to DB for Polling
+  $request->save_db( $response );
 
   echo $response;
   
@@ -124,15 +166,15 @@ $app->post("/on_rating", function () use ($app) {
 
 /* ------------ Client POST Request Handlers or Dispatchers --------------- */
 
-$app->get("/save_db", function () use ($app) {   
+// $app->get("/save_db", function () use ($app) {   
 
-  $request = new BAP(); 
+//   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+//   $body = $app->request->getBody();  
 
-  $send_request = $request->save_db( 'Hello' );  
+//   $send_request = $request->save_db( 'Hello' );  
 
-});
+// });
 
 $app->post("/search_by_pickup_and_drop_location", function () use ($app) {   
 
@@ -141,8 +183,9 @@ $app->post("/search_by_pickup_and_drop_location", function () use ($app) {
   // Get Request Body
   $body = $app->request->getBody();
   // Get Request Headers
-  $headers = $app->request->headers;  
-  // Create Curl Request 
+  $headers = $app->request->headers;    
+
+  // Creating Packet Data and sending request
 
   $send_request = $request->search_by_pickup_and_drop_location( $body, $headers );
 
@@ -158,7 +201,7 @@ $app->post("/select_agency", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request 
+  // Create Packet Data and send request 
 
   $send_request = $request->select_agency( $body, $headers );
 
@@ -174,7 +217,7 @@ $app->post("/initialize_order", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request  
+  // Create Packet Data and send request  
 
   $send_request = $request->initialize_order( $body, $headers );
 
@@ -190,7 +233,7 @@ $app->post("/confirm_order", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request 
+  // Creating Packet Data and sending request
 
   $send_request = $request->confirm_order( $body, $headers );
 
@@ -206,7 +249,7 @@ $app->post("/order_status", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request  
+  // Create Packet Data and send request 
 
   $send_request = $request->order_status( $body, $headers );
 
@@ -222,7 +265,7 @@ $app->post("/cancel_order", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request  
+  // Create Packet Data and send request 
 
   $send_request = $request->order_status( $body, $headers );
 
@@ -238,7 +281,7 @@ $app->post("/rate", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request 
+  // Creating Packet Data and sending request
 
   $send_request = $request->rate( $body, $headers );
 
@@ -254,7 +297,7 @@ $app->post("/get_support", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request 
+  // Creating Packet Data and sending request
 
   $send_request = $request->get_support( $body, $headers );
 
@@ -270,7 +313,7 @@ $app->post("/track_order", function () use ($app) {
   $body = $app->request->getBody();
   // Get Request Headers
   $headers = $app->request->headers;  
-  // Create Curl Request  
+  // Creating Packet Data and sending request
 
   $send_request = $request->track_order( $body, $headers );
 

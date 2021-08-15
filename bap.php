@@ -60,7 +60,7 @@
 		$request_uri = $this->registry_lookup( $headers ).'/search';
 
 		$request_data = json_decode( $request );		
-
+		// Pass transaction ID
 		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
 
 		$context = $this->build_context( $transaction_id );
@@ -740,7 +740,7 @@
 
 		$time = date('Y-m-d H:i:s');
 
-		$data = ['message_id' => rand(1,100),'transaction_id' => rand(1,100),'response_data' => 'Hello World',
+		$data = ['message_id' => $response->context->message_id,'transaction_id' => $response->context->transaction_id,'response_data' => $response,
 		'created'=> $time, 'updated' => $time  ];
 		$db->responses()->insert( $data );	   
 
