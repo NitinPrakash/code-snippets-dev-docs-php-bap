@@ -138,7 +138,11 @@ $app->post("/search_by_pickup_and_drop_location", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request 
 
   $send_request = $request->search_by_pickup_and_drop_location( $body, $headers );
 
@@ -150,7 +154,11 @@ $app->post("/select_agency", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request 
 
   $send_request = $request->select_agency( $body, $headers );
 
@@ -162,7 +170,11 @@ $app->post("/initialize_order", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request  
 
   $send_request = $request->initialize_order( $body, $headers );
 
@@ -174,7 +186,11 @@ $app->post("/confirm_order", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request 
 
   $send_request = $request->confirm_order( $body, $headers );
 
@@ -186,7 +202,11 @@ $app->post("/order_status", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request  
 
   $send_request = $request->order_status( $body, $headers );
 
@@ -198,7 +218,11 @@ $app->post("/cancel_order", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request  
 
   $send_request = $request->order_status( $body, $headers );
 
@@ -210,7 +234,11 @@ $app->post("/rate", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request 
 
   $send_request = $request->rate( $body, $headers );
 
@@ -222,7 +250,11 @@ $app->post("/get_support", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request 
 
   $send_request = $request->get_support( $body, $headers );
 
@@ -234,7 +266,11 @@ $app->post("/track_order", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request  
 
   $send_request = $request->track_order( $body, $headers );
 

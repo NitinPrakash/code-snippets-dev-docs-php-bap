@@ -54,45 +54,48 @@
 	}	
 
 	function search_by_pickup_and_drop_location( $request,$headers = NULL ){
-
+		
 		// Pass auth headers in Lookup
 
 		$request_uri = $this->registry_lookup( $headers ).'/search';
 
-		$request_data = json_decode( $request );
+		$request_data = json_decode( $request );		
 
 		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
-		$context = $this->build_context( $transaction_id );
 
+		$context = $this->build_context( $transaction_id );
 		$context['action'] = 'search';		
 
 		// Creating search request				
 
-		if( !empty( $request_data->start_loc ) && !empty( $request_data->start_loc )  ){
+		if( !empty( $request_data->startLoc ) && !empty( $request_data->endLoc )  ){
 
 			$message = [
 			  'intent' => [
 			    'fulfillment' => [
 			      'start' => [
 			        'location' => [
-			          'gps' => $request_data->start_loc,
+			          'gps' => $request_data->startLoc,
 			        ],
 			      ],
 			    ],
 			    'end' => [
 			      'location' => [
-			        'gps' => $request_data->start_loc,
+			        'gps' => $request_data->endLoc,
 			      ],
 			    ],
 			  ],
 			];
 
-		$build_request = json_encode ( $this->build_request( $context, $message ) );
+		//Building Request Parameters		
+		$build_request = json_encode ( $this->build_request( $context, $message ) );		
 
 		// Building Auth Headers
 		$auth_headers = $this->build_auth_headers();
 
-		$response = $this->do_curl( $request_uri, $build_request, $auth_headers );			
+		$response = $this->do_curl( $request_uri, $build_request, $auth_headers );	
+
+		return $response;		
 
 		}else{
 			http_response_code(400);
@@ -107,8 +110,8 @@
 
 		$request_data = json_decode( $request );
 		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
-		$context = $this->build_context( $transaction_id );
 
+		$context = $this->build_context( $transaction_id );
 		$context['action'] = 'select';						
 
 		if( !empty( $request_data->items ) && is_array( $request_data->items )  ){
@@ -697,6 +700,10 @@
 		$curl = new Curl\Curl();
 		$curl->post($endpoint,$payload);
 
+		if( !empty( $headers ) ){					
+			$curl->setHeaders( $headers );			
+		}
+
 		// If debug = 1, will print the request payload sent to server
 		//$debug = 1;
 
@@ -711,16 +718,16 @@
 
 	}
 
+	// function to generate unique id
+
 	function guidv4($data = null) {
     // Generate 16 bytes (128 bits) of random data or use the data passed into the function.
 	    $data = $data ?? random_bytes(16);
 	    assert(strlen($data) == 16);
-
 	    // Set version to 0100
 	    $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
 	    // Set bits 6-7 to 10
 	    $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
-
 	    // Output the 36 character UUID.
 	    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 	} 
