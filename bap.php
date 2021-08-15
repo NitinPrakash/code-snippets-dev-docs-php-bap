@@ -53,17 +53,20 @@
 		return $request;
 	}	
 
-	function search_by_pickup_and_drop_location( $request ){
+	function search_by_pickup_and_drop_location( $request,$headers = NULL ){
+
+		// Pass auth headers in Lookup
 
 		$request_uri = $this->registry_lookup().'/search';
-		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
 
 		$transaction_id = empty( $request_data->transactionId ) ? '' : $request_data->transactionId;
 		$context = $this->build_context( $transaction_id );
 
-		$context['action'] = 'search';						
+		$context['action'] = 'search';		
+
+		// Creating search request				
 
 		if( !empty( $request_data->start_loc ) && !empty( $request_data->start_loc )  ){
 
@@ -84,9 +87,12 @@
 			  ],
 			];
 
-			$build_request = json_encode ( $this->build_request( $context, $message ) );
+		$build_request = json_encode ( $this->build_request( $context, $message ) );
 
-			$response = $this->do_curl( $request_uri, $build_request, $auth_headers );			
+		// Building Auth Headers
+		$auth_headers = $this->build_auth_headers();
+
+		$response = $this->do_curl( $request_uri, $build_request, $auth_headers );			
 
 		}else{
 			http_response_code(400);
@@ -94,7 +100,7 @@
 
 	}	
 
-	function select_agency( $request ){
+	function select_agency( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/select';
 		$auth_headers = $this->build_auth_headers();
@@ -134,7 +140,7 @@
 	function set_drop_instructions(){
 	}
 
-	function initialize_order( $request ){
+	function initialize_order( $request,$headers = NULL ){
 		
 		$request_uri = $this->registry_lookup().'/init';
 		$auth_headers = $this->build_auth_headers();
@@ -173,7 +179,7 @@
 
 	}
 
-	function confirm_order( $request ){
+	function confirm_order( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/confirm';
 		$auth_headers = $this->build_auth_headers();
@@ -201,7 +207,7 @@
 
 	}
 
-	function order_status( $request ){
+	function order_status( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/status';
 		$auth_headers = $this->build_auth_headers();
@@ -229,7 +235,7 @@
 
 	}	
 
-	function cancel_order( $request ){
+	function cancel_order( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/status';
 		$auth_headers = $this->build_auth_headers();
@@ -254,7 +260,7 @@
 
 	}
 
-	function update_order( $request ){
+	function update_order( $request,$headers = NULL ){
 		
 		$request_uri = $this->registry_lookup().'/update';
 		$auth_headers = $this->build_auth_headers();
@@ -295,7 +301,7 @@
 
 	}
 
-	function rate( $request ){
+	function rate( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/rate';
 		$auth_headers = $this->build_auth_headers();
@@ -324,7 +330,7 @@
 
 	}
 
-	function track_order( $request ){
+	function track_order( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/track';
 		$auth_headers = $this->build_auth_headers();
@@ -342,7 +348,7 @@
 
 			$message = [					  
 					  	'order_id'=> $request_data->orderId,
-					  	'callback_url' => 					    
+					  	'callback_url' =>$callback_url 					    
 					   ];											
 
 			$build_request = json_encode ( $this->build_request( $context, $message ) );
@@ -354,7 +360,7 @@
 		}
 	}
 
-	function get_support( $request ){
+	function get_support( $request,$headers = NULL ){
 
 		$request_uri = $this->registry_lookup().'/support';
 		$auth_headers = $this->build_auth_headers();
@@ -383,10 +389,14 @@
 
 	/* ----- Start On Search BAP ----- */	
 
+	// GET on search end point.
+	// GET FROM DB
+
 	function on_search( $request ){		
 		
-		$response['message']['error']['code'] = 100;
-		$response['message']['error']['description'] = 'Invalid request';			
+		//$response['message']['error']['code'] = 100;
+		//$response['message']['error']['description'] = 'Invalid request';			
+		// Save to DB
 
 		$params = json_decode( $request,1 );			
 
@@ -714,5 +724,35 @@
 	    // Output the 36 character UUID.
 	    return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 	} 
+
+	// Save Response to DB
+	function save_db( $response ){
+
+		$pdo = new PDO("mysql:host=localhost;dbname=bap", 'root', '');
+		$db = new NotORM($pdo); 
+
+		$time = date('Y-m-d H:i:s');
+
+		$data = ['message_id' => rand(1,100),'transaction_id' => rand(1,100),'response_data' => 'Hello World',
+		'created'=> $time, 'updated' => $time  ];
+		$db->responses()->insert( $data );	   
+
+	}
+
+	// Fetch Response from DB
+	function poll_db( $msg_id ){
+
+		$pdo = new PDO("mysql:host=localhost;dbname=bap", 'root', '');
+		$db = new NotORM($pdo); 
+
+		$time = date('Y-m-d H:i:s');	
+
+		if( $db->responses()->where( 'message_id',$msg_id )->count( '*' ) ){
+			return json_encode( ['error'=>0,'data'=>$db->responses()->where( 'message_id',$msg_id ),'message'=>'Poll Success!']);
+		}else{
+			return json_encode(['error'=>1,'data'=>NULL,'message'=>'Poll Failed!']);
+		}	   
+
+	}
     
 }

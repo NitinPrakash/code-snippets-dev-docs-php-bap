@@ -121,6 +121,16 @@ $app->post("/on_rating", function () use ($app) {
 
 /* ------------ Client POST Request Handlers or Dispatchers --------------- */
 
+$app->get("/save_db", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  $body = $app->request->getBody();  
+
+  $send_request = $request->save_db( 'Hello' );  
+
+});
+
 $app->post("/search_by_pickup_and_drop_location", function () use ($app) {   
 
   $request = new BAP(); 
@@ -228,6 +238,130 @@ $app->post("/track_order", function () use ($app) {
   echo $send_request; 
 
 });
+
+// GET Requests to poll message ids
+
+// Create A Poll Request for On Search
+
+$app->get("/on_search", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Select
+
+$app->get("/on_select", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Initialize Order
+
+$app->get("/on_initialize_order", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Confirm
+
+$app->get("/on_confirm", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Order Status
+
+$app->get("/on_order_status", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Track Order
+
+$app->get("/on_track_order", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Cancel Order
+
+$app->get("/on_cancel_order", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+// Create A Poll Request for On Get Support
+
+$app->get("/on_get_support", function () use ($app) {   
+
+  $request = new BAP(); 
+
+  // Fetch Message Id
+  $msg_id = empty( $_REQUEST['message_id'] ) ? 0 : trim( $_REQUEST['message_id'] );
+  // Create Poll Request for Message Id
+  $poll_request = $request->poll_db( $msg_id );
+  // Print Poll Response
+  echo $poll_request; 
+
+});
+
+
 
 // $app->post("/select_offer", function () use ($app) {   
 
