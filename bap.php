@@ -15,7 +15,7 @@
 
 	/* Function for Registry Lookup */
 
-	function registry_lookup(){
+	function registry_lookup( $headers = NULL ){
 		$uri = 'http://localhost/git-repos/code-snippets-dev-docs-php-bpp';
 		return $uri;
 	}
@@ -57,7 +57,7 @@
 
 		// Pass auth headers in Lookup
 
-		$request_uri = $this->registry_lookup().'/search';
+		$request_uri = $this->registry_lookup( $headers ).'/search';
 
 		$request_data = json_decode( $request );
 
@@ -102,7 +102,7 @@
 
 	function select_agency( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/select';
+		$request_uri = $this->registry_lookup( $headers ).'/select';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -142,7 +142,7 @@
 
 	function initialize_order( $request,$headers = NULL ){
 		
-		$request_uri = $this->registry_lookup().'/init';
+		$request_uri = $this->registry_lookup( $headers ).'/init';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -181,7 +181,7 @@
 
 	function confirm_order( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/confirm';
+		$request_uri = $this->registry_lookup( $headers ).'/confirm';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -209,7 +209,7 @@
 
 	function order_status( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/status';
+		$request_uri = $this->registry_lookup( $headers ).'/status';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -227,7 +227,7 @@
 
 			$response = $this->do_curl( $request_uri, $build_request, $auth_headers );
 
-			$this->debug( $response );						
+			// $this->debug( $response );						
 
 		}else{
 			http_response_code(400);
@@ -237,7 +237,7 @@
 
 	function cancel_order( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/status';
+		$request_uri = $this->registry_lookup( $headers ).'/status';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -262,7 +262,7 @@
 
 	function update_order( $request,$headers = NULL ){
 		
-		$request_uri = $this->registry_lookup().'/update';
+		$request_uri = $this->registry_lookup( $headers ).'/update';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -303,7 +303,7 @@
 
 	function rate( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/rate';
+		$request_uri = $this->registry_lookup( $headers ).'/rate';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -332,7 +332,7 @@
 
 	function track_order( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/track';
+		$request_uri = $this->registry_lookup( $headers ).'/track';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );
@@ -362,7 +362,7 @@
 
 	function get_support( $request,$headers = NULL ){
 
-		$request_uri = $this->registry_lookup().'/support';
+		$request_uri = $this->registry_lookup( $headers ).'/support';
 		$auth_headers = $this->build_auth_headers();
 
 		$request_data = json_decode( $request );

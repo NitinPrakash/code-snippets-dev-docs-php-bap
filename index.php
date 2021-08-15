@@ -3,9 +3,9 @@
 include_once('vendor/autoload.php');
 include_once( 'bap.php' );
 
+// Initialise slim microframework for various GET & POST request
 $app = new \Slim\Slim();
 $app->add(new \Slim\Middleware\SessionCookie(array('secret' => 'BAP')));
-
 
 /* API POST REQUEST Handler or Dispatcher */
 
@@ -13,9 +13,12 @@ $app->post("/on_search", function () use ($app) {
 
   $request = new BAP(); 
 
-  $body = $app->request->getBody();  
-
-  $response = $request->on_search( $body );
+  // Get Request Body
+  $body = $app->request->getBody();
+  // Get Request Headers
+  $headers = $app->request->headers;  
+  // Create Curl Request
+  $response = $request->on_search( $body, $headers );
 
   echo $response;
   
@@ -27,7 +30,7 @@ $app->post("/on_select", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_select( $body );
+  $response = $request->on_select( $body, $headers );
 
   echo $response;
   
@@ -39,7 +42,7 @@ $app->post("/on_init", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_init( $body );
+  $response = $request->on_init( $body, $headers );
 
   echo $response;
   
@@ -51,7 +54,7 @@ $app->post("/on_confirm", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_confirm( $body );
+  $response = $request->on_confirm( $body, $headers );
 
   echo $response;
   
@@ -63,7 +66,7 @@ $app->post("/on_status", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_status( $body );
+  $response = $request->on_status( $body, $headers );
 
   echo $response;
   
@@ -75,7 +78,7 @@ $app->post("/on_track", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_track( $body );
+  $response = $request->on_track( $body, $headers );
 
   echo $response;
   
@@ -87,7 +90,7 @@ $app->post("/on_cancel", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_track( $body );
+  $response = $request->on_track( $body, $headers );
 
   echo $response;
   
@@ -99,7 +102,7 @@ $app->post("/on_update", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_update( $body );
+  $response = $request->on_update( $body, $headers );
 
   echo $response;
   
@@ -111,7 +114,7 @@ $app->post("/on_rating", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $response = $request->on_rating( $body );
+  $response = $request->on_rating( $body, $headers );
 
   echo $response;
   
@@ -137,7 +140,7 @@ $app->post("/search_by_pickup_and_drop_location", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->search_by_pickup_and_drop_location( $body );
+  $send_request = $request->search_by_pickup_and_drop_location( $body, $headers );
 
   echo $send_request;	
 
@@ -149,7 +152,7 @@ $app->post("/select_agency", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->select_agency( $body );
+  $send_request = $request->select_agency( $body, $headers );
 
   echo $send_request; 
 
@@ -161,7 +164,7 @@ $app->post("/initialize_order", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->initialize_order( $body );
+  $send_request = $request->initialize_order( $body, $headers );
 
   echo $send_request; 
 
@@ -173,7 +176,7 @@ $app->post("/confirm_order", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->confirm_order( $body );
+  $send_request = $request->confirm_order( $body, $headers );
 
   echo $send_request; 
 
@@ -185,7 +188,7 @@ $app->post("/order_status", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->order_status( $body );
+  $send_request = $request->order_status( $body, $headers );
 
   echo $send_request; 
 
@@ -197,7 +200,7 @@ $app->post("/cancel_order", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->order_status( $body );
+  $send_request = $request->order_status( $body, $headers );
 
   echo $send_request; 
 
@@ -209,7 +212,7 @@ $app->post("/rate", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->rate( $body );
+  $send_request = $request->rate( $body, $headers );
 
   echo $send_request; 
 
@@ -221,7 +224,7 @@ $app->post("/get_support", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->get_support( $body );
+  $send_request = $request->get_support( $body, $headers );
 
   echo $send_request; 
 
@@ -233,7 +236,7 @@ $app->post("/track_order", function () use ($app) {
 
   $body = $app->request->getBody();  
 
-  $send_request = $request->track_order( $body );
+  $send_request = $request->track_order( $body, $headers );
 
   echo $send_request; 
 
@@ -362,14 +365,13 @@ $app->get("/on_get_support", function () use ($app) {
 });
 
 
-
 // $app->post("/select_offer", function () use ($app) {   
 
 //   $request = new BAP(); 
 
 //   $body = $app->request->getBody();  
 
-//   $send_request = $request->select_agency( $body );
+//   $send_request = $request->select_agency( $body, $headers );
 
 //   echo $send_request; 
 
